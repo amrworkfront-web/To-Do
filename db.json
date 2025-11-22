@@ -1,0 +1,19 @@
+{
+  "todos": [
+    {
+      "id": "3459",
+      "title": "from 2=>5 js and ts topics ",
+      "completed": false
+    },
+    {
+      "id": "518d",
+      "title": "from 7=>10 convert database from json server to stripe ? and setup clerk in my project ",
+      "completed": false
+    },
+    {
+      "id": "34e6",
+      "title": " from 10 => 2 if i have meatting with my team i well recap my grad project else i well work in update feature and description  for every task and use zod libararay ? search and light mode ",
+      "completed": false
+    }
+  ]
+}
