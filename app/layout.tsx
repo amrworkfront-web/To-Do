@@ -40,7 +40,7 @@ export default function RootLayout({
         <div className="  flex-1">        <ClerkProvider>
 
           <QueryClientProvider client={queryClient}>
-            <ThemeProvider attribute="class" enableSystem defaultTheme="system" >
+            <ThemeProvider attribute="class" enableSystem defaultTheme="system"   >
 
             {children}
             </ThemeProvider>
