@@ -1,13 +1,12 @@
 import axiosClient from "./axiosClient";
-import { Todo } from "../type";
 
-const getTasks = () => {
-  return axiosClient.get("/tasks");
+const getTasks = (userId: string) => {
+  return axiosClient.get(`/tasks?filters[userId][$eq]=${userId}`);
 };
 const createTask = (task: { title: string; description?: string }) => {
   return axiosClient.post("/tasks", { data: task });
 };
-const deleteTask = (id: string) => {
+const deleteTask = (id: string,) => {
   return axiosClient.delete(`/tasks/${id}`);
 };
 const taskStatus = (id: string,status:boolean) => {

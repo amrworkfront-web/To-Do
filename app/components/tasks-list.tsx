@@ -4,18 +4,21 @@ import axios from "axios";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import taskApi from "../_utils/taskApi";
 import { Todo } from "../type";
-
+import { useUser } from "@clerk/nextjs";
 export default function TasksList() {
   const queryClient = useQueryClient();
+const {user}=useUser();
+
 
   const getData = async () => {
-    const res = await taskApi.getTasks();
+    const res = await taskApi.getTasks(user?.id || "");
     return res.data.data;
   };
 
   const { data, isLoading } = useQuery({
     queryKey: ["todos"],
     queryFn: getData,
+      enabled: !!user?.id,
   });
 
   const delteTask = useMutation({
@@ -40,7 +43,7 @@ return taskApi.taskStatus(id,status);
       {isLoading ? (
         <h1>loding...</h1>
       ) : (
-        data.map((task: Todo) => (
+        data?.map((task: Todo) => (
           <Task
             key={task.id}
             {...task}

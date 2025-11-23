@@ -1,13 +1,14 @@
-
 "use client";
 
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import { useQueryClient ,useMutation} from "@tanstack/react-query";
-import taskApi from "../_utils/taskApi"; // 👈 مهم جداً
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { useUser } from "@clerk/nextjs";
+import taskApi from "../_utils/taskApi";
 
 type Task = {
   title: string;
+  userId: string;
   description?: string;
 };
 
@@ -15,30 +16,34 @@ export default function AddTask() {
   const [task, setTask] = useState<Task>({
     title: "",
     description: "",
+    userId: "",
   });
 
+  const { user } = useUser(); // 👈 الحصول على الـ user من Clerk
   const queryClient = useQueryClient();
 
-
-  const addTask= useMutation({
+  const addTask = useMutation({
     mutationFn: (newTask: Task) => taskApi.createTask(newTask),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
-      
-    setTask({
-      title: "",
-      description: "",
-    });
 
+      setTask({
+        title: "",
+        description: "",
+        userId: "",
+      });
     },
   });
 
   const handleAddTask = async (e: React.FormEvent) => {
-    e.preventDefault(); // 👈 لازم
+    e.preventDefault();
 
     if (!task.title.trim()) return;
 
-    addTask.mutate(task);
+    addTask.mutate({
+      ...task,
+      userId: user?.id || "", // 👈 هنا بنضيف الـ userId تلقائيًا
+    });
   };
 
   return (
