@@ -1,6 +1,5 @@
 "use client";
 import Task from "./task";
-import axios from "axios";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import taskApi from "../_utils/taskApi";
 import { Todo } from "../type";
