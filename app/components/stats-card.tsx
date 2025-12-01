@@ -45,12 +45,12 @@ export default function StatsCard() {
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mt-4">
+    <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-6 mt-4">
       {stats.map((stat, index) => {
         const Icon = stat.icon;
         return (
           <motion.div
-            className="col-span-2 hover:cursor-pointer"
+            className="col-span-2 min-w-264px hover:cursor-pointer"
             key={index}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
