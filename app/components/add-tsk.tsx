@@ -25,7 +25,8 @@ export default function AddTask() {
   const addTask = useMutation({
     mutationFn: (newTask: Task) => taskApi.createTask(newTask),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todos"] });
+      queryClient.invalidateQueries({ queryKey: ["todos"]
+ });
 
       setTask({
         title: "",

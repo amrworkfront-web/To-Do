@@ -11,7 +11,8 @@ export default function StatsCard() {
     return res.data.data;  };
 
   const { data, isLoading } = useQuery({
-    queryKey: ["todos"],
+    queryKey: ["todos"]
+,
     queryFn: getData,
   });
 

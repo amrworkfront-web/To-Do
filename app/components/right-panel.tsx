@@ -11,7 +11,8 @@ export default function RightPanel() {
   };
 
   const { data, isLoading } = useQuery({
-    queryKey: ["todos"],
+    queryKey: ["todos"]
+,
     queryFn: getData,
   });
 

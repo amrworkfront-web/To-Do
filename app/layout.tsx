@@ -1,13 +1,15 @@
 "use client";
+import Sidebar from "./components/sidebar";
+import Navbar from "./components/navbar";
 
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Henny_Penny } from "next/font/google";
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "./globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ClerkProvider } from "@clerk/nextjs";
-import {ThemeProvider} from 'next-themes'
+import { ThemeProvider } from "next-themes";
 const monsieur = Henny_Penny({
   subsets: ["latin"],
   weight: "400",
@@ -38,18 +40,29 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${monsieur.className}   antialiase flex`}>
         {" "}
-        <div className="  flex-1">        <ClerkProvider>
+        <div className="  flex-1">
+          {" "}
+          <ClerkProvider>
+            <QueryClientProvider client={queryClient}>
+              <ThemeProvider
+                attribute="class"
+                enableSystem
+                defaultTheme="system"
+              >
+                <div className="flex">
+                  <div>
+                    <Sidebar />
+                  </div>
+                  <div className="w-full  ">
+                    <Navbar></Navbar>
 
-          <QueryClientProvider client={queryClient}>
-            <ThemeProvider attribute="class" enableSystem defaultTheme="system"   >
-
-            {children}
-            </ThemeProvider>
-            <ReactQueryDevtools  />
-            
-          </QueryClientProvider>
-                  </ClerkProvider>
-
+                    {children}
+                  </div>
+                </div>
+              </ThemeProvider>
+              <ReactQueryDevtools />
+            </QueryClientProvider>
+          </ClerkProvider>
         </div>{" "}
       </body>
     </html>

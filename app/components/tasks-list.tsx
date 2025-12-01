@@ -15,7 +15,8 @@ const {user}=useUser();
   };
 
   const { data, isLoading } = useQuery({
-    queryKey: ["todos"],
+    queryKey: ["todos"]
+,
     queryFn: getData,
       enabled: !!user?.id,
   });
@@ -25,7 +26,8 @@ const {user}=useUser();
       return taskApi.deleteTask(id);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todos"] });
+      queryClient.invalidateQueries({ queryKey: ["todos"]
+ });
     },
   });
 
@@ -34,7 +36,8 @@ const {user}=useUser();
 return taskApi.taskStatus(id,status);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todos"] });
+      queryClient.invalidateQueries({ queryKey: ["todos"]
+ });
     },
   });
   return (
