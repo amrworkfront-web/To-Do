@@ -2,23 +2,28 @@
 
 import { TrendingUp, Clock, Target } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { useUser } from "@clerk/nextjs";
+import taskApi from "../_utils/taskApi";
+import { Todo } from "../type";
 
 export default function RightPanel() {
+  const { user } = useUser();
+
   const getData = async () => {
-    const res = await axios.get("http://localhost:3001/todos");
-    return res.data;
+    if (!user?.id) return [];
+    const res = await taskApi.getTasks(user.id);
+    return res.data.data;
   };
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["todos"]
-,
+  const { data, isLoading } = useQuery<Todo[]>({
+    queryKey: ["todos", user?.id],
     queryFn: getData,
+    enabled: !!user?.id,
   });
 
   if (isLoading) return <p>Loading...</p>;
 
-  const completedTasks = data?.filter((dt) => dt.completed) ?? [];
+  const completedTasks = data?.filter((dt: Todo) => dt.completed) ?? [];
   const completedCount = completedTasks.length;
   const activeCount = (data?.length ?? 0) - completedCount;
 
@@ -49,14 +54,14 @@ export default function RightPanel() {
                 Completion Rate
               </span>
               <span className="text-sm font-bold ">
-                {data.length > 0 ? Math.round((completedCount / data.length) * 100) : 0}%
+                {data && data.length > 0 ? Math.round((completedCount / data.length) * 100) : 0}%
               </span>
             </div>
             <div className="h-2 bg-muted rounded-full overflow-hidden">
               <div
                 className="h-2 bg-blue-700"
                 style={{
-                  width: data.length > 0 ? `${(completedCount / data.length) * 100}%` : "0%",
+                  width: data && data.length > 0 ? `${(completedCount / data.length) * 100}%` : "0%",
                 }}
               ></div>
             </div>
@@ -73,7 +78,7 @@ export default function RightPanel() {
           </div>
 
           <div className="space-y-2">
-            {completedTasks.slice(-5).map((task) => (
+            {completedTasks.slice(-5).map((task: Todo) => (
               <p
                 key={task.id}
                 className="text-sm text-muted-foreground line-through truncate"

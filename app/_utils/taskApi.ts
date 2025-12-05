@@ -12,8 +12,11 @@ const deleteTask = (id: string,) => {
 const taskStatus = (id: string,status:boolean) => {
   return axiosClient.put(`/tasks/${id}`,{ data: {completed: status} });
 };
-const updateTask = (id:string,task:  { title: string; description?: string }) => {
-  return axiosClient.put(`/tasks/${id}`,{ data: task });
+const updateTask = (task:  { id:string ,title: string; description?: string }) => {
+  return axiosClient.put(`/tasks/${task.id}`,{ data: {
+    title: task.title,
+    description: task.description
+  } });
 };
 const searchTasks = (query: string) => {
   return axiosClient.get(`/tasks?filters[title][$contains]=${query}`);

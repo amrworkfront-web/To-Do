@@ -5,20 +5,27 @@ import { BarChart3, CheckCircle2, Zap } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import taskApi from "../_utils/taskApi";
 
-export default function StatsCard() {
-  const getData = async () => {
-  const res = await taskApi.getTasks();
-    return res.data.data;  };
+import { useUser } from "@clerk/nextjs";
+import { Todo } from "../type";
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["todos"]
-,
+export default function StatsCard() {
+  const { user } = useUser();
+
+  const getData = async () => {
+    if (!user?.id) return [];
+    const res = await taskApi.getTasks(user.id);
+    return res.data.data;
+  };
+
+  const { data, isLoading } = useQuery<Todo[]>({
+    queryKey: ["todos", user?.id],
     queryFn: getData,
+    enabled: !!user?.id,
   });
 
   if (isLoading) return <p>Loading...</p>;
 
-  const completedCount = data?.filter((dt) => dt.completed).length ?? 0;
+  const completedCount = data?.filter((dt: Todo) => dt.completed).length ?? 0;
   const activeCount = (data?.length ?? 0) - completedCount;
 
   const stats = [

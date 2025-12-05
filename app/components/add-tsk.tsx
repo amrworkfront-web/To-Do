@@ -19,14 +19,14 @@ export default function AddTask() {
     userId: "",
   });
 
-  const { user } = useUser(); // 👈 الحصول على الـ user من Clerk
+  const { user } = useUser();
   const queryClient = useQueryClient();
 
   const addTask = useMutation({
     mutationFn: (newTask: Task) => taskApi.createTask(newTask),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todos"]
- });
+      // Invalidate the specific user's todos
+      queryClient.invalidateQueries({ queryKey: ["todos", user?.id] });
 
       setTask({
         title: "",
@@ -43,7 +43,7 @@ export default function AddTask() {
 
     addTask.mutate({
       ...task,
-      userId: user?.id || "", // 👈 هنا بنضيف الـ userId تلقائيًا
+      userId: user?.id || "",
     });
   };
 

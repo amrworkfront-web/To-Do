@@ -32,7 +32,7 @@ export default function Task({
           Delete
         </button>
         <div className="hover:bg-blue-600 rounded-xl transition-all duration-200">
-          <DialogDemo title={title} description={description}></DialogDemo>
+          <DialogDemo id={id} title={title} description={description}></DialogDemo>
         </div>{" "}
       </div>
     </div>
